@@ -1,0 +1,157 @@
+body{
+    position: relative;
+    background: #e2e0dd;
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+}
+.texture{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    background: url("./texture.jpg");
+    mix-blend-mode: difference;
+    background-size: contain;
+    background-repeat: repeat;
+    opacity: 0.4;
+}
+.mainWrapper{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    min-width: 100vw;
+}
+
+
+.frame{
+    position: relative;
+    padding: 50px 100px;
+    border-radius: 12px;
+    background-color: #929ba5;
+    box-shadow: 0 0 2px 1px rgb(125 132 141 / 20%);
+}
+
+.power{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    top: 225px;
+    left: 22px;
+}
+.dot{
+    height: 8px;
+    width: 8px;
+    border-radius: 4px;
+    background-color: red;
+    box-shadow: 0 0 8px 0 rgba(255, 0, 0, 0.85);
+    margin-bottom: 10px;
+}
+
+.powerText{
+    color: rgba(255, 255, 255, 0.6);
+    font-family: sans-serif;
+    font-size: 13px;
+}
+
+#screen{
+    position: relative;
+    width: 600px;
+    height: 600px;
+    background-color: #adbb7f;
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 1px 1px 6px 0 rgb(0 0 0 / 50%);
+}
+
+.upperStripe{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    width: 750px;
+    top: 18px;
+    left: 25px;
+}
+
+.stripes{
+    display: flex;
+    flex-direction: column;
+}
+
+.stripes.left{
+    width: 370px;
+    margin-right: 10px;
+}
+.stripes.right{
+    flex: 1;
+    margin-left: 10px;
+}
+
+.blueStripe{
+    height: 2px;
+    background-color: rgba(60,64,137, 0.6);
+    border-radius: 1px;
+    margin-bottom: 4px;
+    width: 100%;
+}
+.redStripe{
+    height: 2px;
+    background-color: rgba(157,74,117, 0.6);
+    border-radius: 1px;
+    width: 100%;
+}
+
+.darkPx{
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 1px solid #203c2e;
+    background-color: #1b3226;
+}
+
+.debug{
+    display: none !important;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    bottom: 50px;
+    right: 50px;
+}
+
+span, p, h1{
+    font-family: "Press Start 2P";
+    color: #1b3226;
+    text-align: center;
+}
+
+#points{
+    position: absolute;
+    display: none;
+    top: 4px;
+    right: 4px;
+}
+
+#level{
+    position: absolute;
+    display: none;
+    top: 4px;
+    left: 4px;
+}
+
+#start{
+
+}
+
+#end{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

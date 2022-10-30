@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css"></link>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Press Start 2P">
+    <title>Snake</title>
+</head>
+<body>
+    <div class="texture"></div>
+    <div class="mainWrapper">
+        <div class="frame">
+            <div class="upperStripe">
+                <div class="stripes left">
+                    <div class="blueStripe"></div>
+                    <div class="redStripe"></div>
+                </div>
+                <span class="powerText">MADE BY AL HILL WITH MONOPHONIC SOUND</span>
+                <div class="stripes right">
+                    <div class="blueStripe"></div>
+                    <div class="redStripe"></div>
+                </div>
+            </div>
+            <div class="power">
+                <div class="dot"></div>
+                <span class="powerText">BATTERY</span>
+            </div>
+            <div id="screen">
+                <span id="points"></span>
+                <span id="level"></span>
+                <div id="start">
+                    <h1>SNAKES!</h1>
+                    <p>PRESS ENTER TO PLAY</p>
+                </div>
+                <div id="end">
+                    <h1>YOURE DED BCOZ SNAKES!</h1>
+                    <p>BUT <span id="endPoints"></span> POINTS</p>
+                    <p>PRESS ENTER TO RETRY</p>
+                </div>
+            </div>
+        </div>
+        <div class="debug">
+            <code>Direction: <span id="direction"></span></code>
+            <code>Speed: <span id="tickerSpeed"></span></code>
+        </div>
+    </div>
+    
+    <audio class="beep" src="beep.wav"></audio>
+    <audio class="beep" src="beep.wav"></audio>
+    <audio class="beep" src="beep.wav"></audio>
+    <audio class="beep" src="beep.wav"></audio>
+    <audio class="beep" src="beep.wav"></audio>
+    <audio class="beep" src="beep.wav"></audio>
+    <audio class="beep" src="beep.wav"></audio>
+    <audio class="beep" src="beep.wav"></audio>
+    <audio id="ded" src="ded.wav"></audio>
+    <audio id="eat" src="eat.wav"></audio>
+    <audio id="levelUp" src="levelup.wav"></audio>
+</body>
+</html>
