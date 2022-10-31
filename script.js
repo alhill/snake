@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const startTitles = document.querySelector("#start")
     const endTitles = document.querySelector("#end")
 
-    let initialPosition = [6 + Math.trunc(Math.random()*(600/pxSize) - 12),6 + Math.trunc(Math.random()*(600/pxSize) - 12)]
+    let initialPosition = [6 + Math.trunc(Math.random()*((600/pxSize) - 12)),6 + Math.trunc(Math.random()*((600/pxSize) - 12))]
     let direction = ["U", "R", "D", "L"][Math.trunc(Math.random()*4)]
     let snake
     let food
@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
         else if(["ArrowDown", "s", "S"].includes(evt.key) && direction !== "U")  { direction = "D" }
         else if(["ArrowLeft", "a", "A"].includes(evt.key) && direction !== "R")  { direction = "L" }
         else if(evt.key === "Enter" && ["START", "DED"].includes(status)){
-            initialPosition = [6 + Math.trunc(Math.random()*(600/pxSize) - 12),6 + Math.trunc(Math.random()*(600/pxSize) - 12)]
+            initialPosition = [6 + Math.trunc(Math.random()*((600/pxSize) - 12)),6 + Math.trunc(Math.random()*((600/pxSize) - 12))]
             direction = ["U", "R", "D", "L"][Math.trunc(Math.random()*4)]
             snake = getInitialSnake(initialPosition, direction)
             food = generateFood(snake)
