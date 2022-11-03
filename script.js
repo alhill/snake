@@ -251,6 +251,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if(status === "PLAYING"){ directionArr.push("R") }
         else{ startGame() }
     })
-    centerBtn.addEventListener("click", () => startGame() )
+    centerBtn.addEventListener("click", () => status !== "PLAYING" && startGame())
     
 })
