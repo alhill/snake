@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const pxSize = 12
+
+    const small = window.innerWidth < 700
+    const pxSize = small ? 6 : 12
 
     const getInitialSnake = (position, direction) => {
         const [x, y] = position
@@ -54,7 +56,20 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     }
     
-    const moveIt = (snake, direction) => {
+    const moveIt = snake => {
+        if(directionArr.length > 0){
+            const newDirection = directionArr[0]
+            if(
+                newDirection === "U" && direction !== "D" ||
+                newDirection === "D" && direction !== "U" ||
+                newDirection === "L" && direction !== "R" ||
+                newDirection === "R" && direction !== "L"
+            ){
+                direction = newDirection
+            }
+            directionArr = directionArr.slice(1)
+        }
+
         if(direction === "U"){ snake = snake.map(([x, y], i) => i === 0 ? [x, y-1] : snake[i-1]) }
         if(direction === "R"){ snake = snake.map(([x, y], i) => i === 0 ? [x+1, y] : snake[i-1]) }
         if(direction === "D"){ snake = snake.map(([x, y], i) => i === 0 ? [x, y+1] : snake[i-1]) }
@@ -65,8 +80,8 @@ document.addEventListener("DOMContentLoaded", () => {
             //BORDER COLLISION
             headX === -1  ||
             headY === -1  ||
-            headX === (600 / pxSize) ||
-            headY === (600 / pxSize) ||
+            headX === (((small ? 300 : 600) / pxSize)) ||
+            headY === (((small ? 300 : 600) / pxSize)) ||
     
             //OWN COLLISION
             amIEatingMyself(snake)
@@ -74,6 +89,15 @@ document.addEventListener("DOMContentLoaded", () => {
             ded.play()
             snake = false
             endPointsMarker.innerText = points
+
+            const oldRecord = parseInt(window.localStorage.record || "0")
+            if(points > oldRecord){
+                document.querySelector("#record").innerText = "NEW RECORD!!"
+                window.localStorage.setItem("record", points)
+            } else {
+                document.querySelector("#record").innerText = `YOUR HIGHEST SCORE IS ${oldRecord} POINTS`
+            }
+
             pointsMarker.style.display = "none"
             levelMarker.style.display = "none"
             endTitles.style.display = "flex"
@@ -99,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const generateFood = snake => {
-        const newFood = [2 + Math.trunc(Math.random()*((600/pxSize) - 2)),2 + Math.trunc(Math.random()*((600/pxSize) - 2))]
+        const newFood = [2 + Math.trunc(Math.random()*(((small ? 300 : 600)/pxSize) - 2)),2 + Math.trunc(Math.random()*(((small ? 300 : 600)/pxSize) - 2))]
         if(snake.some(([x, y]) => newFood[0] > (x-1) && newFood[0] < (x+1) && newFood[1] > (y-1) && newFood[1] < (y+1))){ //NOT SO CLOSE
             return generateFood(snake)
         } else {
@@ -115,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const toFlush = document.querySelectorAll(".darkPx")
             toFlush.forEach(it => screen.removeChild(it))
 
-            snake = moveIt(snake, direction)
+            snake = moveIt(snake, directionArr)
             if(!snake){ 
                 clearInterval(ticker) 
                 return
@@ -124,8 +148,8 @@ document.addEventListener("DOMContentLoaded", () => {
             [...snake, food].forEach(([x, y]) => {
                 const node = document.createElement("div");
                 node.classList.add("darkPx")
-                node.style.top = y*12 + "px"
-                node.style.left = x*12 + "px"
+                node.style.top = y*pxSize + "px"
+                node.style.left = x*pxSize + "px"
                 screen.appendChild(node);
                 directionDebug.innerText = direction
                 speedDebug.innerText = speed + "ms"
@@ -152,8 +176,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const startTitles = document.querySelector("#start")
     const endTitles = document.querySelector("#end")
 
-    let initialPosition = [6 + Math.trunc(Math.random()*((600/pxSize) - 12)),6 + Math.trunc(Math.random()*((600/pxSize) - 12))]
+    let initialPosition = [6 + Math.trunc(Math.random()*(((small ? 300 : 600)/pxSize) - 12)),6 + Math.trunc(Math.random()*((600/pxSize) - 12))]
     let direction = ["U", "R", "D", "L"][Math.trunc(Math.random()*4)]
+    let directionArr = []
     let snake
     let food
     let tick
@@ -167,6 +192,25 @@ document.addEventListener("DOMContentLoaded", () => {
     levelUp.volume = 0.8;
     eat.volume = 0.5;
 
+    const startGame = () => {
+        initialPosition = [6 + Math.trunc(Math.random()*(((small ? 300 : 600)/pxSize) - 12)),6 + Math.trunc(Math.random()*(((small ? 300 : 600)/pxSize) - 12))]
+        direction = ["U", "R", "D", "L"][Math.trunc(Math.random()*4)]
+        snake = getInitialSnake(initialPosition, direction)
+        food = generateFood(snake)
+        tick = 0
+        points = 0
+        eaten = 0
+        level = 1
+        speed = 120
+        directionArr = []
+        status = "PLAYING"
+        createTicker(speed)
+        pointsMarker.style.display = "block"
+        levelMarker.style.display = "block"
+        startTitles.style.display = "none"
+        endTitles.style.display = "none"
+    }
+
 
     beep[0].volume = 0.025;
     beep[1].volume = 0.005;
@@ -176,29 +220,37 @@ document.addEventListener("DOMContentLoaded", () => {
     beep[5].volume = 0.005;
     beep[6].volume = 0.02;
 
-
     document.addEventListener("keydown", evt => {
-        if(["ArrowUp", "w", "W"].includes(evt.key) && direction !== "D")         { direction = "U" }
-        else if(["ArrowRight", "d", "D"].includes(evt.key) && direction !== "L") { direction = "R" }
-        else if(["ArrowDown", "s", "S"].includes(evt.key) && direction !== "U")  { direction = "D" }
-        else if(["ArrowLeft", "a", "A"].includes(evt.key) && direction !== "R")  { direction = "L" }
-        else if(evt.key === "Enter" && ["START", "DED"].includes(status)){
-            initialPosition = [6 + Math.trunc(Math.random()*((600/pxSize) - 12)),6 + Math.trunc(Math.random()*((600/pxSize) - 12))]
-            direction = ["U", "R", "D", "L"][Math.trunc(Math.random()*4)]
-            snake = getInitialSnake(initialPosition, direction)
-            food = generateFood(snake)
-            tick = 0
-            points = 0
-            eaten = 0
-            level = 1
-            speed = 120
-            status = "PLAYING"
-            createTicker(speed)
-            pointsMarker.style.display = "block"
-            levelMarker.style.display = "block"
-            startTitles.style.display = "none"
-            endTitles.style.display = "none"
-        }
+        if(["ArrowUp", "w", "W"].includes(evt.key))         { directionArr.push("U") }
+        else if(["ArrowRight", "d", "D"].includes(evt.key)) { directionArr.push("R") }
+        else if(["ArrowDown", "s", "S"].includes(evt.key))  { directionArr.push("D") }
+        else if(["ArrowLeft", "a", "A"].includes(evt.key))  { directionArr.push("L") }
+        else if(evt.key === "Enter" && ["START", "DED"].includes(status))        { startGame()     }
     })
 
+
+    const upBtn = document.querySelector("#up")
+    const downBtn = document.querySelector("#down")
+    const leftBtn = document.querySelector("#left")
+    const rightBtn = document.querySelector("#right")
+    const centerBtn = document.querySelector("#center")
+ 
+    upBtn.addEventListener("click", () => {
+        if(status === "PLAYING"){ directionArr.push("U") }
+        else{ startGame() }
+    })
+    downBtn.addEventListener("click", () => {
+        if(status === "PLAYING"){ directionArr.push("D") }
+        else{ startGame() }
+    })
+    leftBtn.addEventListener("click", () => {
+        if(status === "PLAYING"){ directionArr.push("L") }
+        else{ startGame() }
+    })
+    rightBtn.addEventListener("click", () => {
+        if(status === "PLAYING"){ directionArr.push("R") }
+        else{ startGame() }
+    })
+    centerBtn.addEventListener("click", () => startGame() )
+    
 })
